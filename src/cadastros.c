@@ -100,11 +100,40 @@ void insere_registro_inicio_rh(no_t *novo, lista_t *lista_rh)
 
 void insere_registro_fim_rh(no_t *novo, lista_t *lista_rh)
 {
+    novo->dados.codigo = ++lista_rh->nr_nos;
+    novo->proximo = NULL;
+    if (is_lista_rh_vazia(lista_rh->cabeca)) {
+        lista_rh->cabeca = novo;
+        return;
+    }
+    
+    no_t *final = localizar_ultimo_registro_rh(lista_rh->cabeca);
+     final->proximo = novo;
 
 }
 
 void excluir_registro_rh(no_t *registro, lista_t *lista_rh)
 {
+    if (lista_rh->cabeca == registro) {
+        lista_rh->cabeca = registro->proximo;
+        free(registro);
+        lista_rh->nr_nos--;
+        return;
+    }
+
+    no_t *atual = lista_rh->cabeca;
+
+
+    while (atual->proximo != NULL && atual->proximo != registro) {
+        atual = atual->proximo;
+    }
+
+
+    if (atual->proximo == registro) {
+        atual->proximo = registro->proximo;
+        free(registro);
+        lista_rh->nr_nos--;
+    }
 
 }
 
